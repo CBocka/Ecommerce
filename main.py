@@ -3,13 +3,14 @@ from database.PopulateDatabase import *
 
 
 def main():
-    target_database = "ecommerce_pre_produccion"
+    target_database = "ecommerce_preproduction"
     cnx = connect_to_mysql(host="localhost", port=3306, user="root", password="root", database=target_database)
 
-    populate_almacenes_table(cnx, 100)
-    populate_clientes_table(cnx, 4000)
-    populate_categorias_productos_table(cnx)
-    populate_productos_table(cnx, 800)
+    populate_warehouses_table(cnx, 20)
+    populate_customers_table(cnx, 100)
+    populate_product_categories_table(cnx)
+    populate_products_table(cnx)
+    populate_orders_table(cnx, 30)
 
     cnx.close()
 
