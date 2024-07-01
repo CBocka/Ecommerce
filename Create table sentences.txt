@@ -1,0 +1,186 @@
+-- Tabla almacenes
+CREATE TABLE almacenes (
+    almc_id VARCHAR(8) PRIMARY KEY,
+    almc_nombre VARCHAR(50),
+    almc_ubicacion VARCHAR(100)
+);
+
+-- Tabla almacen_contacto
+CREATE TABLE almacen_contacto (
+    almc_id VARCHAR(8) PRIMARY KEY,
+    almc_tlf_contacto VARCHAR(20),
+    almc_email_contacto VARCHAR(50),
+    FOREIGN KEY (almc_id) REFERENCES almacenes(almc_id)
+);
+
+-- Tabla categorias_productos
+CREATE TABLE categorias_productos (
+    cat_id VARCHAR(8) PRIMARY KEY,
+    cat_nombre VARCHAR(50),
+    cat_desc VARCHAR(255)
+);
+
+-- Tabla productos
+CREATE TABLE productos (
+    pro_id VARCHAR(8) PRIMARY KEY,
+    pro_nombre VARCHAR(100),
+    pro_unit_precio DECIMAL(10, 2),
+    pro_img VARCHAR(255),
+    cat_id VARCHAR(8),
+    FOREIGN KEY (cat_id) REFERENCES categorias_productos(cat_id)
+);
+
+-- Tabla descripcion_producto
+CREATE TABLE descripcion_producto (
+    pro_id VARCHAR(8) PRIMARY KEY,
+    desc_producto VARCHAR(255),
+	FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
+
+-- Tabla inventario
+CREATE TABLE inventario (
+    inv_id VARCHAR(50) PRIMARY KEY,
+    almc_id VARCHAR(8),
+    pro_id VARCHAR(8),
+    inv_cantidad INT,
+    FOREIGN KEY (almc_id) REFERENCES almacenes(almc_id),
+    FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
+
+-- Tabla clientes
+CREATE TABLE clientes (
+    cli_id VARCHAR(8) PRIMARY KEY,
+    cli_tipo VARCHAR(20),
+    cli_nombre VARCHAR(80),
+    cli_email VARCHAR(50),
+    cli_tlf VARCHAR(20)
+);
+
+-- Tabla cuentas
+CREATE TABLE cuentas (
+    acc_name VARCHAR(50) PRIMARY KEY,
+    cli_id VARCHAR(8),
+    acc_password VARCHAR(8),
+    acc_email VARCHAR(50),
+    acc_creation_date DATE,
+    FOREIGN KEY (cli_id) REFERENCES clientes(cli_id)
+);
+
+-- Tabla pedidos
+CREATE TABLE pedidos (
+    pd_id VARCHAR(8) PRIMARY KEY,
+    id_cliente VARCHAR(8),
+    pd_fecha TIMESTAMP,
+    pd_total DECIMAL(10, 2),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(cli_id)
+);
+
+-- Tabla detalles_pedido
+CREATE TABLE detalles_pedido (
+    pd_id VARCHAR(8),
+    pro_id VARCHAR(8),
+    pro_cantidad INT,
+    pro_subtotal DECIMAL(10, 2),
+    PRIMARY KEY (pd_id, pro_id),
+    FOREIGN KEY (pd_id) REFERENCES pedidos(pd_id),
+    FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+
+
+-- Tabla almacenes
+CREATE TABLE almacenes (
+    almc_id INT PRIMARY KEY AUTO_INCREMENT,
+    almc_nombre VARCHAR(50),
+    almc_ubicacion VARCHAR(100)
+);
+
+-- Tabla almacen_contacto
+CREATE TABLE almacen_contacto (
+    almc_id INT PRIMARY KEY,
+    almc_tlf_contacto VARCHAR(20),
+    almc_email_contacto VARCHAR(50),
+    FOREIGN KEY (almc_id) REFERENCES almacenes(almc_id)
+);
+
+-- Tabla categorias_productos
+CREATE TABLE categorias_productos (
+    cat_id INT PRIMARY KEY AUTO_INCREMENT,
+    cat_nombre VARCHAR(50),
+    cat_desc VARCHAR(255)
+);
+
+-- Tabla productos
+CREATE TABLE productos (
+    pro_id INT PRIMARY KEY AUTO_INCREMENT,
+    pro_nombre VARCHAR(100),
+    pro_unit_precio DECIMAL(10, 2),
+    pro_img VARCHAR(255),
+    cat_id INT,
+    FOREIGN KEY (cat_id) REFERENCES categorias_productos(cat_id)
+);
+
+-- Tabla descripcion_producto
+CREATE TABLE descripcion_producto (
+    pro_id INT PRIMARY KEY,
+    desc_producto VARCHAR(255),
+    FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
+
+-- Tabla inventario
+CREATE TABLE inventario (
+    inv_id INT PRIMARY KEY AUTO_INCREMENT,
+    almc_id INT,
+    pro_id INT,
+    inv_cantidad INT,
+    FOREIGN KEY (almc_id) REFERENCES almacenes(almc_id),
+    FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
+
+-- Tabla clientes
+CREATE TABLE clientes (
+    cli_id INT PRIMARY KEY AUTO_INCREMENT,
+    cli_tipo VARCHAR(20),
+    cli_nombre VARCHAR(80),
+    cli_email VARCHAR(50),
+    cli_tlf VARCHAR(20)
+);
+
+-- Tabla cuentas
+CREATE TABLE cuentas (
+    acc_name VARCHAR(50) PRIMARY KEY,
+    cli_id INT,
+    acc_password VARCHAR(8),
+    acc_email VARCHAR(50),
+    acc_creation_date DATE,
+    FOREIGN KEY (cli_id) REFERENCES clientes(cli_id)
+);
+
+-- Tabla pedidos
+CREATE TABLE pedidos (
+    pd_id INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT,
+    pd_fecha TIMESTAMP,
+    pd_total DECIMAL(10, 2),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(cli_id)
+);
+
+-- Tabla detalles_pedido
+CREATE TABLE detalles_pedido (
+    pd_id INT,
+    pro_id INT,
+    pro_cantidad INT,
+    pro_subtotal DECIMAL(10, 2),
+    PRIMARY KEY (pd_id, pro_id),
+    FOREIGN KEY (pd_id) REFERENCES pedidos(pd_id),
+    FOREIGN KEY (pro_id) REFERENCES productos(pro_id)
+);
