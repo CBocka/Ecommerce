@@ -1,6 +1,7 @@
 from data_processing.DataProcessing import *
 from database.PopulateDatabase import *
 from data_processing.TableTreatment import *
+from data_processing.DataAnalysis import *
 
 
 def main():
@@ -10,14 +11,15 @@ def main():
     input_database = "ecommerce_preproduction"
     output_database = "ecommerce_production"
 
-    # cnx = connect_to_mysql(host="localhost", port=3306, user="root", password="root", database=input_database)
-    # populate_database(cnx)
-    # close_connection(cnx)
+    cnx = connect_to_mysql(host="localhost", port=3306, user="root", password="root", database=input_database)
+    populate_database(cnx)
+    close_connection(cnx)
 
     spark = create_spark_session("Ecommerce Project")
     set_logging_level(spark)
 
-    # tables_treatments(spark, input_database, output_database)
+    tables_treatments(spark, input_database, output_database)
+    analysis_from_production_tables(spark, output_database)
 
     close_session(spark)
 
@@ -60,6 +62,23 @@ def tables_treatments(spark: SparkSession, input_database: str, output_database:
     accounts_df = hash_password(accounts_df, "acc_password")
     accounts_df = normalize_text(accounts_df, "acc_email")
     save_dataframe_as_table(accounts_df, output_database, "accounts")
+
+    orders_df = create_dataframe_from_table(spark, input_database, "orders")
+    save_dataframe_as_table(orders_df, output_database, "orders")
+
+    order_details_df = create_dataframe_from_table(spark, input_database, "order_details")
+    save_dataframe_as_table(order_details_df, output_database, "order_details")
+
+
+def analysis_from_production_tables(spark: SparkSession, database: str):
+    best_selling_products_df = best_selling_products(spark, database)
+    best_selling_products_df.show(truncate=False)
+
+    unsold_products_df = unsold_products(spark, database)
+    unsold_products_df.show(truncate=False)
+
+    products_by_category_df = products_by_category(spark, database)
+    products_by_category_df.show()
 
 
 if __name__ == "__main__":
