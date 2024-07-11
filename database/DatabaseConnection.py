@@ -23,6 +23,10 @@ def connect_to_mysql(host, port, user, password, database):
         return None
 
 
+def close_connection(connection):
+    connection.close()
+
+
 def read_table(cnx, table_name, record_id=None):
     try:
         cursor = cnx.cursor(dictionary=True)

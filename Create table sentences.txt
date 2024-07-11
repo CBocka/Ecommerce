@@ -1,3 +1,5 @@
+======================= Pre-producción
+
 -- Tabla warehouses
 CREATE TABLE warehouses (
     wrh_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -85,3 +87,98 @@ CREATE TABLE order_details (
     FOREIGN KEY (ord_id) REFERENCES orders(ord_id),
     FOREIGN KEY (pro_id) REFERENCES products(pro_id)
 );
+
+
+
+
+
+======================= Producción
+
+-- Tabla warehouses
+CREATE TABLE warehouses (
+    wrh_id INT PRIMARY KEY AUTO_INCREMENT,
+    wrh_name VARCHAR(50),
+    wrh_location VARCHAR(100)
+);
+
+-- Tabla warehouse_contact
+CREATE TABLE warehouse_contact (
+    wrh_id INT PRIMARY KEY,
+    wrh_phone VARCHAR(20),
+    wrh_email VARCHAR(50),
+    FOREIGN KEY (wrh_id) REFERENCES warehouses(wrh_id)
+);
+
+-- Tabla product_categories
+CREATE TABLE product_categories (
+    cat_id INT PRIMARY KEY AUTO_INCREMENT,
+    cat_name VARCHAR(50),
+    cat_desc VARCHAR(255)
+);
+
+-- Tabla products
+CREATE TABLE products (
+    pro_id INT PRIMARY KEY AUTO_INCREMENT,
+    pro_name VARCHAR(100),
+    pro_unit_price DECIMAL(10, 2),
+    pro_img VARCHAR(255),
+    cat_id INT,
+    FOREIGN KEY (cat_id) REFERENCES product_categories(cat_id)
+);
+
+-- Tabla product_description
+CREATE TABLE product_description (
+    pro_id INT PRIMARY KEY,
+    pro_desc VARCHAR(255),
+    FOREIGN KEY (pro_id) REFERENCES products(pro_id)
+);
+
+-- Tabla inventory
+CREATE TABLE inventory (
+    inv_id INT PRIMARY KEY AUTO_INCREMENT,
+    wrh_id INT,
+    pro_id INT,
+    inv_quantity INT,
+    FOREIGN KEY (wrh_id) REFERENCES warehouses(wrh_id),
+    FOREIGN KEY (pro_id) REFERENCES products(pro_id)
+);
+
+-- Tabla customers
+CREATE TABLE customers (
+    cus_id INT PRIMARY KEY AUTO_INCREMENT,
+    cus_type VARCHAR(20),
+    cus_name VARCHAR(80),
+    cus_email VARCHAR(50),
+    cus_phone VARCHAR(20)
+);
+
+-- Tabla accounts
+CREATE TABLE accounts (
+    acc_name VARCHAR(50) PRIMARY KEY,
+    cus_id INT,
+    acc_password VARCHAR(100),
+    acc_email VARCHAR(50),
+    acc_creation_date DATE,
+    FOREIGN KEY (cus_id) REFERENCES customers(cus_id)
+);
+
+-- Tabla orders
+CREATE TABLE orders (
+    ord_id INT PRIMARY KEY AUTO_INCREMENT,
+    cus_id INT,
+    ord_date TIMESTAMP,
+    ord_total DECIMAL(10, 2),
+    FOREIGN KEY (cus_id) REFERENCES customers(cus_id)
+);
+
+-- Tabla order_details
+CREATE TABLE order_details (
+    ord_id INT,
+    pro_id INT,
+    pro_quantity INT,
+    pro_subtotal DECIMAL(10, 2),
+    PRIMARY KEY (ord_id, pro_id),
+    FOREIGN KEY (ord_id) REFERENCES orders(ord_id),
+    FOREIGN KEY (pro_id) REFERENCES products(pro_id)
+);
+
