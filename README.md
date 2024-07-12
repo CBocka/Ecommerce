@@ -5,7 +5,7 @@ Proyecto realizado con Python y PySpark como simulación de gestión para los da
 ### 1. Elaboración del esquema para la base de datos:
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/f84f7880-d000-490a-b343-f4f19b0d179f" height="450" width="220" >
+<img src="https://github.com/user-attachments/assets/f84f7880-d000-490a-b343-f4f19b0d179f" height="450" width="450" >
 </p>
 
 El primer paso fue decidir la que sería la estructura de tablas para las bases de datos. Contamos con una base de datos de pre-producción y otra de producción. La estructura de tablas es la misma en ambas pero en producción únicamente podemos tener datos limpios y formateados de manera correcta.
